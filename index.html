@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
+    <title>أبو زهرة | حجز الخدمة</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23F5C542'>🎧</text></svg>" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ── reset & base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            min-height: 100vh;
+            background: #050301;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* ── animated background ── */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .bg-gradient {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(229, 170, 50, 0.12) 0%, #030101 90%);
+            animation: breatheBg 8s ease-in-out infinite;
+        }
+        @keyframes breatheBg {
+            0%,
+            100% {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+        }
+        .star-field {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 15% 30%, #F5C542, rgba(0, 0, 0, 0)),
+                radial-gradient(3px 3px at 75% 60%, #FFD966, rgba(0, 0, 0, 0)),
+                radial-gradient(1px 1px at 90% 20%, #F5C542, rgba(0, 0, 0, 0)),
+                radial-gradient(2px 2px at 45% 85%, #E5B83C, rgba(0, 0, 0, 0)),
+                radial-gradient(4px 4px at 10% 70%, #FFF2C8, rgba(0, 0, 0, 0));
+            background-repeat: no-repeat;
+            background-size: 200px 200px;
+            animation: starMove 40s linear infinite;
+            opacity: 0.4;
+        }
+        @keyframes starMove {
+            0% {
+                background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+            }
+            100% {
+                background-position: 100% 100%, 80% 70%, 120% 50%, 60% 90%, 40% 110%;
+            }
+        }
+        .gold-ring {
+            position: absolute;
+            border: 2px solid rgba(229, 184, 60, 0.15);
+            border-radius: 50%;
+            animation: floatRing 20s infinite linear;
+        }
+        .ring1 {
+            width: 250px;
+            height: 250px;
+            top: -80px;
+            right: -80px;
+            border-width: 1px;
+            animation-duration: 25s;
+        }
+        .ring2 {
+            width: 400px;
+            height: 400px;
+            bottom: -120px;
+            left: -120px;
+            border-width: 2px;
+            animation-duration: 35s;
+            animation-direction: reverse;
+        }
+        .ring3 {
+            width: 150px;
+            height: 150px;
+            top: 40%;
+            left: 5%;
+            border-width: 1px;
+            animation-duration: 18s;
+        }
+        @keyframes floatRing {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── main card ── */
+        .card {
+            position: relative;
+            z-index: 20;
+            width: 100%;
+            max-width: 520px;
+            background: rgba(8, 5, 2, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 184, 60, 0.3);
+            border-radius: 40px;
+            padding: 24px 22px 32px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ── header ── */
+        .hero {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+        .logo-animation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(145deg, #2a2418, #0e0b06);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border: 1px solid #F5C542;
+        }
+        .brand-name {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #F5C542, #FFE4A0, #D4AF37);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .subtitle {
+            font-size: 14px;
+            font-weight: 400;
+            color: #b89a5e;
+            margin-top: 4px;
+            letter-spacing: 1px;
+        }
+        .divider-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #F5C542, transparent);
+            margin: 10px auto 6px;
+        }
+
+        /* ── form ── */
+        .form-group {
+            margin-bottom: 16px;
+            text-align: right;
+        }
+        .form-group label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #FFDE9E;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group label .required-star {
+            color: #F5C542;
+            margin-right: 2px;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .input-wrapper .input-icon {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 15px;
+            color: #F5C542;
+            pointer-events: none;
+        }
+        input {
+            width: 100%;
+            padding: 12px 44px 12px 14px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(229, 184, 60, 0.25);
+            border-radius: 35px;
+            color: #FFF2DF;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            transition: all 0.25s;
+            text-align: right;
+        }
+        input:focus {
+            border-color: #F5C542;
+            outline: none;
+            background: #0a0602;
+            box-shadow: 0 0 0 3px rgba(245, 197, 66, 0.08);
+        }
+        input::placeholder {
+            color: #6b5a36;
+            font-size: 13px;
+        }
+        .error-msg {
+            color: #ffb347;
+            font-size: 11px;
+            margin-top: 4px;
+            display: none;
+            font-weight: 600;
+        }
+        .error-msg.show {
+            display: block;
+        }
+
+        /* ── submit button ── */
+        .btn-premium {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(95deg, #E5B83C, #B8860B);
+            border: none;
+            border-radius: 40px;
+            color: #080501;
+            font-weight: 900;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 22px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 20px rgba(245, 197, 66, 0.2);
+        }
+        .btn-premium:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 30px rgba(245, 197, 66, 0.35);
+        }
+        .btn-premium:active {
+            transform: scale(0.98);
+        }
+        .btn-premium .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: none;
+        }
+        .btn-premium.loading .spinner {
+            display: block;
+        }
+        .btn-premium.loading .btn-text {
+            display: none;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── small footer note ── */
+        .form-footnote {
+            text-align: center;
+            font-size: 11px;
+            color: #6b5a36;
+            margin-top: 16px;
+            border-top: 1px dashed rgba(229, 184, 60, 0.15);
+            padding-top: 14px;
+        }
+        .form-footnote i {
+            color: #F5C542;
+            margin: 0 4px;
+        }
+
+        /* ── success modal ── */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+            padding: 16px;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal-content {
+            background: #100c06;
+            border: 1px solid #F5C542;
+            border-radius: 36px;
+            padding: 28px 22px 22px;
+            text-align: center;
+            max-width: 340px;
+            width: 100%;
+            animation: modalPop 0.3s ease;
+        }
+        @keyframes modalPop {
+            0% {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: #F5C542;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #1a1306;
+        }
+        .modal-content h2 {
+            color: #F5C542;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+        .modal-content p {
+            color: #b89a5e;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .btn-wa,
+        .btn-close-modal {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border-radius: 35px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 14px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-wa {
+            background: #25D366;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .btn-wa:hover {
+            background: #1da851;
+        }
+        .btn-close-modal {
+            background: rgba(245, 197, 66, 0.12);
+            color: #F5C542;
+            border: 1px solid #F5C542;
+        }
+        .btn-close-modal:hover {
+            background: rgba(245, 197, 66, 0.2);
+        }
+
+        /* ── responsive ── */
+        @media (min-width: 600px) {
+            .card {
+                padding: 32px 36px 36px;
+            }
+            .logo-icon {
+                width: 65px;
+                height: 65px;
+                font-size: 32px;
+            }
+            .brand-name {
+                font-size: 32px;
+            }
+        }
+        @media (max-width: 400px) {
+            .card {
+                padding: 16px 14px 24px;
+            }
+            .brand-name {
+                font-size: 22px;
+            }
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 22px;
+            }
+            input {
+                font-size: 13px;
+                padding: 10px 38px 10px 12px;
+            }
+            .btn-premium {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── animated background ─── -->
+    <div class="animated-bg">
+        <div class="bg-gradient"></div>
+        <div class="star-field"></div>
+        <div class="gold-ring ring1"></div>
+        <div class="gold-ring ring2"></div>
+        <div class="gold-ring ring3"></div>
+    </div>
+
+    <!-- ─── main card ─── -->
+    <div class="card">
+        <div class="hero">
+            <div class="logo-animation">
+                <div class="logo-icon">🎧</div>
+                <div class="brand-name">أبو زهرة</div>
+            </div>
+            <div class="subtitle">احجز خدمتك الآن</div>
+            <div class="divider-line"></div>
+        </div>
+
+        <form id="bookingForm">
+            <!-- 1. الاسم المسجل على التلجرام -->
+            <div class="form-group">
+                <label>اسمك المسجل كما هو على التلجرام <span class="required-star">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fab fa-telegram-plane"></i></span>
+                    <input type="text" id="telegramName" placeholder="مثل: Ahmed_Abdullah" />
+                </div>
+                <div class="error-msg" id="telegramNameError"></div>
+            </div>
+
+            <!-- 2. رقم الواتس اب -->
+            <div class="form-group">
+                <label>رقم الواتس اب الخاص بك <span class="required-star">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fab fa-whatsapp"></i></span>
+                    <input type="tel" id="whatsappNumber" placeholder="01XXXXXXXXX" maxlength="11" />
+                </div>
+                <div class="error-msg" id="whatsappNumberError"></div>
+            </div>
+
+            <!-- 3. رقم التلجرام -->
+            <div class="form-group">
+                <label>رقم التليجرام الخاص بك <span class="required-star">*</span></label>
+                <div class="input-wrapper">
+                    <span class="input-icon"><i class="fab fa-telegram"></i></span>
+                    <input type="tel" id="telegramNumber" placeholder="01XXXXXXXXX" maxlength="11" />
+                </div>
+                <div class="error-msg" id="telegramNumberError"></div>
+            </div>
+
+            <button type="submit" class="btn-premium" id="submitBtn">
+                <span class="spinner"></span>
+                <span class="btn-text"><i class="fas fa-check-circle"></i> تأكيد الحجز</span>
+            </button>
+        </form>
+
+        <div class="form-footnote">
+            <i class="fas fa-lock"></i> بياناتك آمنة · سيتم التواصل خلال 24 ساعة
+        </div>
+    </div>
+
+    <!-- ─── success modal ─── -->
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon"><i class="fas fa-check"></i></div>
+            <h2>تم الحجز بنجاح</h2>
+            <p>شكراً لك! سنتواصل معك قريباً عبر واتساب أو تليجرام.</p>
+            <a href="#" class="btn-wa" id="whatsappBtn" target="_blank">
+                <i class="fab fa-whatsapp"></i> تواصل عبر واتساب
+            </a>
+            <button class="btn-close-modal" id="closeModal">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- ─── Firebase ─── -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
+    </script>
+    <script>
+        // ── Firebase config ──
+        const firebaseConfig = {
+            apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
+            authDomain: "reservations-e411a.firebaseapp.com",
+            projectId: "reservations-e411a",
+            storageBucket: "reservations-e411a.firebasestorage.app",
+            messagingSenderId: "197134642642",
+            appId: "1:197134642642:web:a112f2cbf9dc64d0096c0b"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // ── DOM refs ──
+        const form = document.getElementById('bookingForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const successModal = document.getElementById('successModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        const bodyEl = document.body;
+
+        const telegramName = document.getElementById('telegramName');
+        const whatsappNumber = document.getElementById('whatsappNumber');
+        const telegramNumber = document.getElementById('telegramNumber');
+
+        const nameErr = document.getElementById('telegramNameError');
+        const waErr = document.getElementById('whatsappNumberError');
+        const tgErr = document.getElementById('telegramNumberError');
+
+        // ── helpers ──
+        function showError(errEl, msg) {
+            errEl.innerHTML = '⚠ ' + msg;
+            errEl.classList.add('show');
+        }
+
+        function clearError(errEl) {
+            errEl.classList.remove('show');
+        }
+
+        function isValidPhone(val) {
+            return /^01[0-9]{9}$/.test(val);
+        }
+
+        function openSuccessModal(waMsg) {
+            whatsappBtn.href = 'https://wa.me/201282235324?text=' + encodeURIComponent(waMsg);
+            successModal.classList.add('show');
+            bodyEl.classList.add('modal-open');
+        }
+
+        function closeSuccessModal() {
+            successModal.classList.remove('show');
+            bodyEl.classList.remove('modal-open');
+        }
+
+        // ── form submit ──
+        let submitting = false;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (submitting) return;
+
+            // reset errors
+            [nameErr, waErr, tgErr].forEach(el => el.classList.remove('show'));
+
+            const name = telegramName.value.trim();
+            const wa = whatsappNumber.value.trim();
+            const tg = telegramNumber.value.trim();
+
+            let valid = true;
+
+            if (!name) {
+                showError(nameErr, 'الاسم المسجل على التلجرام مطلوب');
+                valid = false;
+            }
+            if (!wa) {
+                showError(waErr, 'رقم الواتس اب مطلوب');
+                valid = false;
+            } else if (!isValidPhone(wa)) {
+                showError(waErr, 'رقم غير صحيح (يبدأ 01)');
+                valid = false;
+            }
+            if (!tg) {
+                showError(tgErr, 'رقم التليجرام مطلوب');
+                valid = false;
+            } else if (!isValidPhone(tg)) {
+                showError(tgErr, 'رقم غير صحيح (يبدأ 01)');
+                valid = false;
+            }
+
+            if (!valid) return;
+
+            submitting = true;
+            submitBtn.classList.add('loading');
+
+            try {
+                await db.collection('reservations').add({
+                    telegram_name: name,
+                    whatsapp: wa,
+                    telegram_number: tg,
+                    created_at: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                const msg =
+                    `🎧 حجز جديد - أبو زهرة\n👤 الاسم (تلجرام): ${name}\n📱 واتساب: ${wa}\n📲 تليجرام: ${tg}`;
+
+                openSuccessModal(msg);
+
+                // reset form
+                form.reset();
+
+            } catch (err) {
+                alert('⚠️ حدث خطأ تقني، حاول مرة أخرى.');
+            } finally {
+                submitting = false;
+                submitBtn.classList.remove('loading');
+            }
+        });
+
+        // ── modal close ──
+        closeModalBtn.addEventListener('click', closeSuccessModal);
+        successModal.addEventListener('click', (e) => {
+            if (e.target === successModal) closeSuccessModal();
+        });
+
+        // ── live validation hints ──
+        whatsappNumber.addEventListener('input', () => {
+            const val = whatsappNumber.value.trim();
+            if (val && !isValidPhone(val)) {
+                showError(waErr, 'رقم غير صحيح (يبدأ 01)');
+            } else {
+                clearError(waErr);
+            }
+        });
+
+        telegramNumber.addEventListener('input', () => {
+            const val = telegramNumber.value.trim();
+            if (val && !isValidPhone(val)) {
+                showError(tgErr, 'رقم غير صحيح (يبدأ 01)');
+            } else {
+                clearError(tgErr);
+            }
+        });
+
+        telegramName.addEventListener('input', () => {
+            if (telegramName.value.trim()) clearError(nameErr);
+        });
+    </script>
+</body>
+</html>
