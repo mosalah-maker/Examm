@@ -1,23 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
-    <title>أبو زهرة | حجز الخدمة</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23F5C542'>🎧</text></svg>" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>أبو زهرة | حجز الامتحان</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%236D5BFF'>🎓</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ── reset & base ── */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Cairo', sans-serif;
             min-height: 100vh;
-            background: #050301;
+            background: #080B14;
+            color: #FFFFFF;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -25,11 +21,18 @@
             position: relative;
             overflow-x: hidden;
         }
-        body.modal-open {
-            overflow: hidden;
-        }
+        body.modal-open { overflow: hidden; }
 
-        /* ── animated background ── */
+        /* ===== نفس خلفية لوحة التحكم ===== */
+        .admin-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(circle at 20% 30%, rgba(109, 91, 255, 0.08) 0%, #080B14 90%);
+        }
         .animated-bg {
             position: fixed;
             top: 0;
@@ -43,19 +46,12 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 30% 40%, rgba(229, 170, 50, 0.12) 0%, #030101 90%);
+            background: radial-gradient(circle at 30% 40%, rgba(109, 91, 255, 0.08) 0%, #080B14 90%);
             animation: breatheBg 8s ease-in-out infinite;
         }
         @keyframes breatheBg {
-            0%,
-            100% {
-                opacity: 0.7;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1.02);
-            }
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.02); }
         }
         .star-field {
             position: absolute;
@@ -63,378 +59,296 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image:
-                radial-gradient(2px 2px at 15% 30%, #F5C542, rgba(0, 0, 0, 0)),
-                radial-gradient(3px 3px at 75% 60%, #FFD966, rgba(0, 0, 0, 0)),
-                radial-gradient(1px 1px at 90% 20%, #F5C542, rgba(0, 0, 0, 0)),
-                radial-gradient(2px 2px at 45% 85%, #E5B83C, rgba(0, 0, 0, 0)),
-                radial-gradient(4px 4px at 10% 70%, #FFF2C8, rgba(0, 0, 0, 0));
+            background-image: radial-gradient(2px 2px at 15% 30%, #6D5BFF, rgba(0,0,0,0)), radial-gradient(3px 3px at 75% 60%, #00E5FF, rgba(0,0,0,0)), radial-gradient(1px 1px at 90% 20%, #6D5BFF, rgba(0,0,0,0)), radial-gradient(2px 2px at 45% 85%, #FF4FD8, rgba(0,0,0,0)), radial-gradient(4px 4px at 10% 70%, #00D084, rgba(0,0,0,0));
             background-repeat: no-repeat;
             background-size: 200px 200px;
             animation: starMove 40s linear infinite;
-            opacity: 0.4;
+            opacity: 0.3;
         }
         @keyframes starMove {
-            0% {
-                background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-            }
-            100% {
-                background-position: 100% 100%, 80% 70%, 120% 50%, 60% 90%, 40% 110%;
-            }
+            0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+            100% { background-position: 100% 100%, 80% 70%, 120% 50%, 60% 90%, 40% 110%; }
         }
         .gold-ring {
             position: absolute;
-            border: 2px solid rgba(229, 184, 60, 0.15);
+            border: 2px solid rgba(109, 91, 255, 0.12);
             border-radius: 50%;
             animation: floatRing 20s infinite linear;
         }
-        .ring1 {
-            width: 250px;
-            height: 250px;
-            top: -80px;
-            right: -80px;
-            border-width: 1px;
-            animation-duration: 25s;
-        }
-        .ring2 {
-            width: 400px;
-            height: 400px;
-            bottom: -120px;
-            left: -120px;
-            border-width: 2px;
-            animation-duration: 35s;
-            animation-direction: reverse;
-        }
-        .ring3 {
-            width: 150px;
-            height: 150px;
-            top: 40%;
-            left: 5%;
-            border-width: 1px;
-            animation-duration: 18s;
-        }
+        .ring1 { width: 250px; height: 250px; top: -80px; right: -80px; border-width: 1px; animation-duration: 25s; border-color: rgba(109, 91, 255, 0.15); }
+        .ring2 { width: 400px; height: 400px; bottom: -120px; left: -120px; border-width: 2px; animation-duration: 35s; animation-direction: reverse; border-color: rgba(0, 229, 255, 0.1); }
+        .ring3 { width: 150px; height: 150px; top: 40%; left: 5%; border-width: 1px; animation-duration: 18s; border-color: rgba(255, 79, 216, 0.1); }
         @keyframes floatRing {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        /* ── main card ── */
+        /* ===== نفس تصميم البطاقات من لوحة التحكم ===== */
         .card {
             position: relative;
             z-index: 20;
             width: 100%;
-            max-width: 520px;
-            background: rgba(8, 5, 2, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(229, 184, 60, 0.3);
+            max-width: 620px;
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(109, 91, 255, 0.15);
             border-radius: 40px;
-            padding: 24px 22px 32px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
+            padding: 28px 26px 32px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.03);
         }
 
-        /* ── header ── */
-        .hero {
-            text-align: center;
-            margin-bottom: 22px;
+        /* ===== نفس الهيدر من لوحة التحكم ===== */
+        .hero { text-align: center; margin-bottom: 24px; }
+        .logo-animation { display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+        .logo-icon { 
+            width: 60px; height: 60px; 
+            background: linear-gradient(145deg, #1a1f35, #0d111f); 
+            border-radius: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 30px; 
+            border: 1px solid rgba(109, 91, 255, 0.3); 
+            box-shadow: 0 0 30px rgba(109, 91, 255, 0.05);
         }
-        .logo-animation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 6px;
+        .brand-name { 
+            font-size: 30px; font-weight: 900; 
+            background: linear-gradient(135deg, #6D5BFF, #00E5FF, #FF4FD8);
+            -webkit-background-clip: text; background-clip: text; color: transparent; 
+            background-size: 300% 300%;
+            animation: gradientShift 4s ease infinite;
         }
-        .logo-icon {
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(145deg, #2a2418, #0e0b06);
-            border-radius: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            border: 1px solid #F5C542;
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        .brand-name {
-            font-size: 28px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #F5C542, #FFE4A0, #D4AF37);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .sub-title { 
+            font-size: 15px; font-weight: 700; color: #6D5BFF; 
+            display: inline-block; background: rgba(8, 11, 20, 0.6); 
+            padding: 6px 18px; border-radius: 40px; 
         }
-        .subtitle {
-            font-size: 14px;
-            font-weight: 400;
-            color: #b89a5e;
-            margin-top: 4px;
-            letter-spacing: 1px;
+        .glow-badge { 
+            display: inline-flex; align-items: center; gap: 8px; 
+            background: rgba(109, 91, 255, 0.08); 
+            border: 1px solid rgba(109, 91, 255, 0.2); 
+            border-radius: 50px; padding: 6px 16px; margin-top: 12px; 
+            font-size: 11px; color: #C7D2FE; backdrop-filter: blur(10px);
         }
-        .divider-line {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #F5C542, transparent);
-            margin: 10px auto 6px;
-        }
+        .glow-badge i { color: #6D5BFF; font-size: 14px; }
 
-        /* ── form ── */
-        .form-group {
-            margin-bottom: 16px;
-            text-align: right;
+        /* ===== نفس الفورم من لوحة التحكم ===== */
+        .form-group { margin-bottom: 16px; text-align: right; }
+        .form-group label { font-size: 13px; font-weight: 700; color: #6D5BFF; margin-bottom: 6px; display: block; }
+        .form-group label .required { color: #FF4D4D; }
+        .input-wrapper { position: relative; }
+        .input-wrapper .input-icon { 
+            position: absolute; right: 16px; top: 50%; transform: translateY(-50%); 
+            font-size: 14px; color: #6D5BFF; opacity: 0.6;
+            z-index: 1;
         }
-        .form-group label {
-            font-size: 13px;
-            font-weight: 700;
-            color: #FFDE9E;
-            display: block;
-            margin-bottom: 5px;
+        input, select { 
+            width: 100%; padding: 12px 44px 12px 16px; 
+            background: rgba(8, 11, 20, 0.8); 
+            border: 1px solid rgba(109, 91, 255, 0.15); 
+            border-radius: 16px; color: #FFFFFF; 
+            font-family: 'Cairo', sans-serif; font-size: 14px; 
+            transition: all 0.3s ease; text-align: right; 
+            appearance: none;
+            -webkit-appearance: none;
         }
-        .form-group label .required-star {
-            color: #F5C542;
-            margin-right: 2px;
-        }
-        .input-wrapper {
-            position: relative;
-        }
-        .input-wrapper .input-icon {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 15px;
-            color: #F5C542;
-            pointer-events: none;
-        }
-        input {
-            width: 100%;
-            padding: 12px 44px 12px 14px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(229, 184, 60, 0.25);
-            border-radius: 35px;
-            color: #FFF2DF;
-            font-family: 'Cairo', sans-serif;
-            font-size: 14px;
-            transition: all 0.25s;
-            text-align: right;
-        }
-        input:focus {
-            border-color: #F5C542;
-            outline: none;
-            background: #0a0602;
-            box-shadow: 0 0 0 3px rgba(245, 197, 66, 0.08);
-        }
-        input::placeholder {
-            color: #6b5a36;
-            font-size: 13px;
-        }
-        .error-msg {
-            color: #ffb347;
-            font-size: 11px;
-            margin-top: 4px;
-            display: none;
-            font-weight: 600;
-        }
-        .error-msg.show {
-            display: block;
-        }
-
-        /* ── submit button ── */
-        .btn-premium {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(95deg, #E5B83C, #B8860B);
-            border: none;
-            border-radius: 40px;
-            color: #080501;
-            font-weight: 900;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 22px;
+        select {
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 20px rgba(245, 197, 66, 0.2);
+            padding-left: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236D5BFF' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 16px center;
+            background-size: 12px;
         }
-        .btn-premium:hover {
-            transform: scale(1.01);
-            box-shadow: 0 6px 30px rgba(245, 197, 66, 0.35);
+        select option {
+            background: #111827;
+            color: #FFFFFF;
+            padding: 8px;
         }
-        .btn-premium:active {
-            transform: scale(0.98);
+        input:focus, select:focus { 
+            border-color: #6D5BFF; outline: none; 
+            background: rgba(8, 11, 20, 0.95); 
+            box-shadow: 0 0 40px rgba(109, 91, 255, 0.06), inset 0 0 30px rgba(109, 91, 255, 0.02);
         }
-        .btn-premium .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(0, 0, 0, 0.2);
-            border-top-color: #000;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            display: none;
-        }
-        .btn-premium.loading .spinner {
-            display: block;
-        }
-        .btn-premium.loading .btn-text {
-            display: none;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+        input::placeholder { color: rgba(199, 210, 254, 0.3); }
+        .error-msg { color: #FF4D4D; font-size: 11px; margin-top: 4px; display: none; font-weight: 600; }
+        .error-msg.show { display: block; }
 
-        /* ── small footer note ── */
+        /* ===== نفس الأزرار من لوحة التحكم ===== */
+        .btn-premium { 
+            width: 100%; padding: 14px; 
+            background: linear-gradient(135deg, #6D5BFF, #5B4BD9); 
+            border: none; border-radius: 20px; color: #FFFFFF; 
+            font-weight: 800; font-size: 16px; 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            margin-top: 22px; cursor: pointer; transition: all 0.3s ease; 
+            position: relative; overflow: hidden;
+        }
+        .btn-premium::after {
+            content: ''; position: absolute; inset: 0; 
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0; transition: opacity 0.3s;
+        }
+        .btn-premium:hover::after { opacity: 1; }
+        .btn-premium:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(109, 91, 255, 0.35); }
+        .btn-premium:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-premium:disabled::after { display: none; }
+        .spinner { 
+            width: 20px; height: 20px; 
+            border: 2px solid rgba(255,255,255,0.2); border-top-color: white; 
+            border-radius: 50%; animation: spin 0.6s linear infinite; display: none; 
+        }
+        .btn-premium.loading .spinner { display: block; }
+        .btn-premium.loading .btn-text { display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== الفوتر ===== */
         .form-footnote {
             text-align: center;
-            font-size: 11px;
-            color: #6b5a36;
-            margin-top: 16px;
-            border-top: 1px dashed rgba(229, 184, 60, 0.15);
-            padding-top: 14px;
+            margin-top: 25px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(109, 91, 255, 0.08);
+            font-size: 12px;
+            color: rgba(199, 210, 254, 0.3);
         }
         .form-footnote i {
-            color: #F5C542;
+            color: #6D5BFF;
             margin: 0 4px;
         }
 
-        /* ── success modal ── */
+        /* ===== تحميل الشعب ===== */
+        .sections-loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(109, 91, 255, 0.2);
+            border-top-color: #6D5BFF;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* ===== نفس المودال من لوحة التحكم ===== */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(12px);
+            background: rgba(8, 11, 20, 0.95);
+            backdrop-filter: blur(24px);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 1100;
             padding: 16px;
         }
-        .modal-overlay.show {
-            display: flex;
-        }
-        .modal-content {
-            background: #100c06;
-            border: 1px solid #F5C542;
-            border-radius: 36px;
-            padding: 28px 22px 22px;
-            text-align: center;
-            max-width: 340px;
-            width: 100%;
+        .modal-overlay.show { display: flex; }
+        .modal-content { 
+            background: rgba(17, 24, 39, 0.95); 
+            border: 1px solid rgba(109, 91, 255, 0.2); 
+            border-radius: 40px; 
+            padding: 32px 28px; 
+            text-align: center; 
+            max-width: 360px; 
+            width: 100%; 
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
             animation: modalPop 0.3s ease;
         }
         @keyframes modalPop {
-            0% {
-                transform: scale(0.9);
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
-        .success-icon {
-            width: 60px;
-            height: 60px;
-            background: #F5C542;
-            border-radius: 50%;
-            margin: 0 auto 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            color: #1a1306;
+        .success-icon { 
+            width: 64px; height: 64px; 
+            background: linear-gradient(135deg, #6D5BFF, #00E5FF); 
+            border-radius: 50%; 
+            margin: 0 auto 14px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 34px; 
+            color: #080B14; 
+            box-shadow: 0 8px 30px rgba(109, 91, 255, 0.2);
         }
-        .modal-content h2 {
-            color: #F5C542;
-            font-size: 20px;
-            margin-bottom: 4px;
+        .modal-content h2 { 
+            color: #6D5BFF; 
+            margin-bottom: 8px; 
+            font-size: 22px; 
+            font-weight: 800; 
         }
-        .modal-content p {
-            color: #b89a5e;
-            font-size: 13px;
-            margin-bottom: 16px;
+        .modal-content p { 
+            color: #C7D2FE; 
+            font-size: 14px; 
+            margin-bottom: 16px; 
         }
-        .btn-wa,
-        .btn-close-modal {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            border-radius: 35px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 14px;
-            text-align: center;
+        .btn-wa, .btn-close-modal { 
+            display: block; 
+            width: 100%; 
+            padding: 12px; 
+            margin-top: 8px; 
+            border-radius: 16px; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 14px; 
+            text-align: center; 
+            transition: all 0.3s;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        .btn-wa {
-            background: #25D366;
-            color: #fff;
-            margin-bottom: 8px;
+        .btn-wa { 
+            background: #25D366; 
+            color: white; 
         }
-        .btn-wa:hover {
-            background: #1da851;
+        .btn-wa:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3); 
         }
-        .btn-close-modal {
-            background: rgba(245, 197, 66, 0.12);
-            color: #F5C542;
-            border: 1px solid #F5C542;
+        .btn-close-modal { 
+            background: rgba(109, 91, 255, 0.08); 
+            color: #C7D2FE; 
+            border: 1px solid rgba(109, 91, 255, 0.1); 
         }
-        .btn-close-modal:hover {
-            background: rgba(245, 197, 66, 0.2);
+        .btn-close-modal:hover { 
+            background: rgba(109, 91, 255, 0.15); 
+            border-color: rgba(109, 91, 255, 0.2); 
         }
 
-        /* ── responsive ── */
-        @media (min-width: 600px) {
-            .card {
-                padding: 32px 36px 36px;
-            }
-            .logo-icon {
-                width: 65px;
-                height: 65px;
-                font-size: 32px;
-            }
-            .brand-name {
-                font-size: 32px;
-            }
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 768px) { 
+            .card { padding: 32px 36px 36px; } 
+            .logo-icon { width: 70px; height: 70px; font-size: 36px; } 
+            .brand-name { font-size: 36px; } 
+        }
+        @media (max-width: 600px) {
+            .card { padding: 20px 16px 24px; }
+            .logo-icon { width: 50px; height: 50px; font-size: 24px; }
+            .brand-name { font-size: 24px; }
+            .sub-title { font-size: 13px; padding: 4px 14px; }
         }
         @media (max-width: 400px) {
-            .card {
-                padding: 16px 14px 24px;
-            }
-            .brand-name {
-                font-size: 22px;
-            }
-            .logo-icon {
-                width: 44px;
-                height: 44px;
-                font-size: 22px;
-            }
-            input {
-                font-size: 13px;
-                padding: 10px 38px 10px 12px;
-            }
-            .btn-premium {
-                font-size: 14px;
-                padding: 12px;
-            }
+            .card { padding: 16px 14px 20px; }
+            .brand-name { font-size: 20px; }
+            .logo-icon { width: 44px; height: 44px; font-size: 20px; }
+            input, select { font-size: 13px; padding: 10px 38px 10px 12px; }
+            .btn-premium { font-size: 14px; padding: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ─── animated background ─── -->
+    <!-- ===== خلفية متحركة ===== -->
+    <div class="admin-bg"></div>
     <div class="animated-bg">
         <div class="bg-gradient"></div>
         <div class="star-field"></div>
@@ -443,21 +357,23 @@
         <div class="gold-ring ring3"></div>
     </div>
 
-    <!-- ─── main card ─── -->
+    <!-- ===== البطاقة الرئيسية ===== -->
     <div class="card">
         <div class="hero">
             <div class="logo-animation">
-                <div class="logo-icon">🎧</div>
+                <div class="logo-icon">🎓</div>
                 <div class="brand-name">أبو زهرة</div>
             </div>
-            <div class="subtitle">احجز خدمتك الآن</div>
-            <div class="divider-line"></div>
+            <div class="sub-title">📚 حجز الامتحان</div>
+            <div class="glow-badge">
+                <i class="fas fa-graduation-cap"></i> سجل الآن · مقاعد محدودة <i class="fas fa-bolt"></i>
+            </div>
         </div>
 
         <form id="bookingForm">
             <!-- 1. الاسم المسجل على التلجرام -->
             <div class="form-group">
-                <label>اسمك المسجل كما هو على التلجرام <span class="required-star">*</span></label>
+                <label>اسمك المسجل كما هو على التلجرام <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <span class="input-icon"><i class="fab fa-telegram-plane"></i></span>
                     <input type="text" id="telegramName" placeholder="مثل: Ahmed_Abdullah" />
@@ -467,7 +383,7 @@
 
             <!-- 2. رقم الواتس اب -->
             <div class="form-group">
-                <label>رقم الواتس اب الخاص بك <span class="required-star">*</span></label>
+                <label>رقم الواتس اب الخاص بك <span class="required">*</span></label>
                 <div class="input-wrapper">
                     <span class="input-icon"><i class="fab fa-whatsapp"></i></span>
                     <input type="tel" id="whatsappNumber" placeholder="01XXXXXXXXX" maxlength="11" />
@@ -475,14 +391,16 @@
                 <div class="error-msg" id="whatsappNumberError"></div>
             </div>
 
-            <!-- 3. رقم التلجرام -->
+            <!-- 3. الشعبة (قائمة منسدلة من Firebase) -->
             <div class="form-group">
-                <label>رقم التليجرام الخاص بك <span class="required-star">*</span></label>
+                <label>الشعبة <span class="required">*</span></label>
                 <div class="input-wrapper">
-                    <span class="input-icon"><i class="fab fa-telegram"></i></span>
-                    <input type="tel" id="telegramNumber" placeholder="01XXXXXXXXX" maxlength="11" />
+                    <span class="input-icon"><i class="fas fa-users"></i></span>
+                    <select id="sectionSelect">
+                        <option value="">جاري تحميل الشعب...</option>
+                    </select>
                 </div>
-                <div class="error-msg" id="telegramNumberError"></div>
+                <div class="error-msg" id="sectionError"></div>
             </div>
 
             <button type="submit" class="btn-premium" id="submitBtn">
@@ -493,15 +411,17 @@
 
         <div class="form-footnote">
             <i class="fas fa-lock"></i> بياناتك آمنة · سيتم التواصل خلال 24 ساعة
+            <br>
+            <i class="fas fa-headphones"></i> أبو زهرة للخدمات التعليمية
         </div>
     </div>
 
-    <!-- ─── success modal ─── -->
+    <!-- ===== مودال النجاح ===== -->
     <div class="modal-overlay" id="successModal">
         <div class="modal-content">
-            <div class="success-icon"><i class="fas fa-check"></i></div>
+            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
             <h2>تم الحجز بنجاح</h2>
-            <p>شكراً لك! سنتواصل معك قريباً عبر واتساب أو تليجرام.</p>
+            <p>شكراً لك! سنتواصل معك قريباً عبر واتساب لتأكيد الحجز وإرسال رابط الامتحان.</p>
             <a href="#" class="btn-wa" id="whatsappBtn" target="_blank">
                 <i class="fab fa-whatsapp"></i> تواصل عبر واتساب
             </a>
@@ -509,25 +429,21 @@
         </div>
     </div>
 
-    <!-- ─── Firebase ─── -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js">
-    </script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js">
-    </script>
+    <!-- ===== Firebase ===== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script>
-        // ── Firebase config ──
+        // ===== نفس إعدادات Firebase من لوحة التحكم =====
         const firebaseConfig = {
             apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
             authDomain: "reservations-e411a.firebaseapp.com",
             projectId: "reservations-e411a",
-            storageBucket: "reservations-e411a.firebasestorage.app",
-            messagingSenderId: "197134642642",
-            appId: "1:197134642642:web:a112f2cbf9dc64d0096c0b"
+            storageBucket: "reservations-e411a.appspot.com"
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // ── DOM refs ──
+        // ===== عناصر الصفحة =====
         const form = document.getElementById('bookingForm');
         const submitBtn = document.getElementById('submitBtn');
         const successModal = document.getElementById('successModal');
@@ -537,13 +453,54 @@
 
         const telegramName = document.getElementById('telegramName');
         const whatsappNumber = document.getElementById('whatsappNumber');
-        const telegramNumber = document.getElementById('telegramNumber');
+        const sectionSelect = document.getElementById('sectionSelect');
 
         const nameErr = document.getElementById('telegramNameError');
         const waErr = document.getElementById('whatsappNumberError');
-        const tgErr = document.getElementById('telegramNumberError');
+        const sectionErr = document.getElementById('sectionError');
 
-        // ── helpers ──
+        // ===== تحميل الشعب من Firebase =====
+        async function loadSections() {
+            try {
+                // محاولة جلب الشعب من مجموعة منفصلة
+                const sectionsSnapshot = await db.collection('exam_sections').orderBy('name', 'asc').get();
+                
+                if (!sectionsSnapshot.empty) {
+                    // تفريغ القائمة
+                    sectionSelect.innerHTML = '<option value="">اختر الشعبة...</option>';
+                    
+                    sectionsSnapshot.forEach(doc => {
+                        const data = doc.data();
+                        const option = document.createElement('option');
+                        option.value = data.name || doc.id;
+                        option.textContent = data.name || doc.id;
+                        sectionSelect.appendChild(option);
+                    });
+                } else {
+                    // إذا لم توجد شعب، نضيف بعض الخيارات الافتراضية
+                    sectionSelect.innerHTML = `
+                        <option value="">اختر الشعبة...</option>
+                        <option value="علمي رياضة">📐 علمي رياضة</option>
+                        <option value="علمي علوم">🔬 علمي علوم</option>
+                        <option value="أدبي">📖 أدبي</option>
+                    `;
+                }
+            } catch (error) {
+                console.error('خطأ في تحميل الشعب:', error);
+                // في حالة الخطأ، نضيف خيارات افتراضية
+                sectionSelect.innerHTML = `
+                    <option value="">اختر الشعبة...</option>
+                    <option value="علمي رياضة">📐 علمي رياضة</option>
+                    <option value="علمي علوم">🔬 علمي علوم</option>
+                    <option value="أدبي">📖 أدبي</option>
+                `;
+            }
+        }
+
+        // ===== تحميل الشعب عند تحميل الصفحة =====
+        loadSections();
+
+        // ===== دوال مساعدة =====
         function showError(errEl, msg) {
             errEl.innerHTML = '⚠ ' + msg;
             errEl.classList.add('show');
@@ -568,19 +525,19 @@
             bodyEl.classList.remove('modal-open');
         }
 
-        // ── form submit ──
+        // ===== إرسال النموذج =====
         let submitting = false;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (submitting) return;
 
-            // reset errors
-            [nameErr, waErr, tgErr].forEach(el => el.classList.remove('show'));
+            // إعادة تعيين الأخطاء
+            [nameErr, waErr, sectionErr].forEach(el => el.classList.remove('show'));
 
             const name = telegramName.value.trim();
             const wa = whatsappNumber.value.trim();
-            const tg = telegramNumber.value.trim();
+            const section = sectionSelect.value;
 
             let valid = true;
 
@@ -595,11 +552,8 @@
                 showError(waErr, 'رقم غير صحيح (يبدأ 01)');
                 valid = false;
             }
-            if (!tg) {
-                showError(tgErr, 'رقم التليجرام مطلوب');
-                valid = false;
-            } else if (!isValidPhone(tg)) {
-                showError(tgErr, 'رقم غير صحيح (يبدأ 01)');
+            if (!section) {
+                showError(sectionErr, 'الرجاء اختيار الشعبة');
                 valid = false;
             }
 
@@ -609,22 +563,29 @@
             submitBtn.classList.add('loading');
 
             try {
-                await db.collection('reservations').add({
-                    telegram_name: name,
-                    whatsapp: wa,
-                    telegram_number: tg,
+                // حفظ في Firebase (مجموعة منفصلة للامتحانات)
+                await db.collection('exam_reservations').add({
+                    name: name,
+                    phone: wa,
+                    section: section,
+                    status: 'pending',
                     created_at: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                const msg =
-                    `🎧 حجز جديد - أبو زهرة\n👤 الاسم (تلجرام): ${name}\n📱 واتساب: ${wa}\n📲 تليجرام: ${tg}`;
+                const msg = 
+                    `🎓 حجز امتحان جديد - أبو زهرة\n` +
+                    `👤 الاسم (تلجرام): ${name}\n` +
+                    `📱 واتساب: ${wa}\n` +
+                    `📚 الشعبة: ${section}\n\n` +
+                    `📌 سيتم التواصل لتأكيد الحجز وإرسال رابط الامتحان.`;
 
                 openSuccessModal(msg);
-
-                // reset form
                 form.reset();
+                // إعادة تعيين الـ select إلى الخيار الأول
+                sectionSelect.selectedIndex = 0;
 
             } catch (err) {
+                console.error(err);
                 alert('⚠️ حدث خطأ تقني، حاول مرة أخرى.');
             } finally {
                 submitting = false;
@@ -632,13 +593,13 @@
             }
         });
 
-        // ── modal close ──
+        // ===== إغلاق المودال =====
         closeModalBtn.addEventListener('click', closeSuccessModal);
         successModal.addEventListener('click', (e) => {
             if (e.target === successModal) closeSuccessModal();
         });
 
-        // ── live validation hints ──
+        // ===== التحقق المباشر =====
         whatsappNumber.addEventListener('input', () => {
             const val = whatsappNumber.value.trim();
             if (val && !isValidPhone(val)) {
@@ -648,17 +609,12 @@
             }
         });
 
-        telegramNumber.addEventListener('input', () => {
-            const val = telegramNumber.value.trim();
-            if (val && !isValidPhone(val)) {
-                showError(tgErr, 'رقم غير صحيح (يبدأ 01)');
-            } else {
-                clearError(tgErr);
-            }
-        });
-
         telegramName.addEventListener('input', () => {
             if (telegramName.value.trim()) clearError(nameErr);
+        });
+
+        sectionSelect.addEventListener('change', () => {
+            if (sectionSelect.value) clearError(sectionErr);
         });
     </script>
 </body>
