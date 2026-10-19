@@ -1,640 +1,389 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Abo Zahra | حجز الامتحان</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23F59E0B'>👑</text></svg>">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Cairo', sans-serif;
-            min-height: 100vh;
-            background: #0F0A1A;
-            color: #F3E8FF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        body.modal-open { overflow: hidden; }
-
-        .admin-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: radial-gradient(circle at 70% 20%, rgba(245, 158, 11, 0.06) 0%, #0F0A1A 90%);
-        }
-        .animated-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .bg-gradient {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 40%, rgba(245, 158, 11, 0.05) 0%, #0F0A1A 90%);
-            animation: breatheBg 8s ease-in-out infinite;
-        }
-        @keyframes breatheBg {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
-        }
-        .star-field {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: radial-gradient(2px 2px at 15% 30%, #F59E0B, rgba(0,0,0,0)), radial-gradient(3px 3px at 75% 60%, #FCD34D, rgba(0,0,0,0)), radial-gradient(1px 1px at 90% 20%, #F59E0B, rgba(0,0,0,0)), radial-gradient(2px 2px at 45% 85%, #D97706, rgba(0,0,0,0)), radial-gradient(4px 4px at 10% 70%, #FBBF24, rgba(0,0,0,0));
-            background-repeat: no-repeat;
-            background-size: 200px 200px;
-            animation: starMove 40s linear infinite;
-            opacity: 0.3;
-        }
-        @keyframes starMove {
-            0% { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
-            100% { background-position: 100% 100%, 80% 70%, 120% 50%, 60% 90%, 40% 110%; }
-        }
-        .gold-ring {
-            position: absolute;
-            border: 2px solid rgba(245, 158, 11, 0.08);
-            border-radius: 50%;
-            animation: floatRing 20s infinite linear;
-        }
-        .ring1 { width: 250px; height: 250px; top: -80px; right: -80px; border-width: 1px; animation-duration: 25s; border-color: rgba(245, 158, 11, 0.12); }
-        .ring2 { width: 400px; height: 400px; bottom: -120px; left: -120px; border-width: 2px; animation-duration: 35s; animation-direction: reverse; border-color: rgba(251, 191, 36, 0.06); }
-        .ring3 { width: 150px; height: 150px; top: 40%; left: 5%; border-width: 1px; animation-duration: 18s; border-color: rgba(217, 119, 6, 0.08); }
-        @keyframes floatRing {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .card {
-            position: relative;
-            z-index: 20;
-            width: 100%;
-            max-width: 620px;
-            background: rgba(26, 18, 37, 0.85);
-            backdrop-filter: blur(24px);
-            border: 1px solid rgba(245, 158, 11, 0.08);
-            border-radius: 40px;
-            padding: 28px 26px 32px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.02);
-        }
-
-        .hero { text-align: center; margin-bottom: 24px; }
-        .logo-animation { display: flex; justify-content: center; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
-        .logo-icon { 
-            width: 60px; height: 60px; 
-            background: linear-gradient(145deg, #1A1225, #0F0A1A); 
-            border-radius: 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 30px; 
-            border: 1px solid rgba(245, 158, 11, 0.2); 
-            box-shadow: 0 0 30px rgba(245, 158, 11, 0.04);
-        }
-        .brand-name { 
-            font-size: 30px; font-weight: 900; 
-            background: linear-gradient(135deg, #F59E0B, #FCD34D, #D97706);
-            -webkit-background-clip: text; background-clip: text; color: transparent; 
-            background-size: 300% 300%;
-            animation: gradientGold 4s ease infinite;
-        }
-        @keyframes gradientGold {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .sub-title { 
-            font-size: 15px; font-weight: 700; color: #F59E0B; 
-            display: inline-block; background: rgba(15, 10, 26, 0.6); 
-            padding: 6px 18px; border-radius: 40px; 
-        }
-        .glow-badge { 
-            display: inline-flex; align-items: center; gap: 8px; 
-            background: rgba(245, 158, 11, 0.04); 
-            border: 1px solid rgba(245, 158, 11, 0.12); 
-            border-radius: 50px; padding: 6px 16px; margin-top: 12px; 
-            font-size: 11px; color: #D4C4E6; backdrop-filter: blur(10px);
-        }
-        .glow-badge i { color: #F59E0B; font-size: 14px; }
-
-        .form-group { margin-bottom: 16px; text-align: right; }
-        .form-group label { font-size: 13px; font-weight: 700; color: #F59E0B; margin-bottom: 6px; display: block; }
-        .form-group label .required { color: #F87171; }
-        .input-wrapper { position: relative; }
-        .input-wrapper .input-icon { 
-            position: absolute; right: 16px; top: 50%; transform: translateY(-50%); 
-            font-size: 14px; color: #F59E0B; opacity: 0.5;
-            z-index: 1;
-        }
-        input, select { 
-            width: 100%; padding: 12px 44px 12px 16px; 
-            background: rgba(15, 10, 26, 0.8); 
-            border: 1px solid rgba(245, 158, 11, 0.08); 
-            border-radius: 16px; color: #F3E8FF; 
-            font-family: 'Cairo', sans-serif; font-size: 14px; 
-            transition: all 0.3s ease; text-align: right; 
-            appearance: none;
-            -webkit-appearance: none;
-        }
-        select {
-            cursor: pointer;
-            padding-left: 40px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23F59E0B' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: left 16px center;
-            background-size: 12px;
-        }
-        select option {
-            background: #1A1225;
-            color: #F3E8FF;
-            padding: 8px;
-        }
-        input:focus, select:focus { 
-            border-color: #F59E0B; outline: none; 
-            background: rgba(15, 10, 26, 0.95); 
-            box-shadow: 0 0 40px rgba(245, 158, 11, 0.04), inset 0 0 30px rgba(245, 158, 11, 0.01);
-        }
-        input::placeholder { color: rgba(243, 232, 255, 0.2); }
-        .error-msg { color: #F87171; font-size: 11px; margin-top: 4px; display: none; font-weight: 600; }
-        .error-msg.show { display: block; }
-
-        .btn-premium { 
-            width: 100%; padding: 14px; 
-            background: linear-gradient(135deg, #F59E0B, #D97706); 
-            border: none; border-radius: 20px; color: #0F0A1A; 
-            font-weight: 800; font-size: 16px; 
-            display: flex; align-items: center; justify-content: center; gap: 10px; 
-            margin-top: 22px; cursor: pointer; transition: all 0.3s ease; 
-            position: relative; overflow: hidden;
-        }
-        .btn-premium::after {
-            content: ''; position: absolute; inset: 0; 
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .btn-premium:hover::after { opacity: 1; }
-        .btn-premium:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(245, 158, 11, 0.25); }
-        .btn-premium:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .btn-premium:disabled::after { display: none; }
-        .spinner { 
-            width: 20px; height: 20px; 
-            border: 2px solid rgba(15, 10, 26, 0.2); border-top-color: #0F0A1A; 
-            border-radius: 50%; animation: spin 0.6s linear infinite; display: none; 
-        }
-        .btn-premium.loading .spinner { display: block; }
-        .btn-premium.loading .btn-text { display: none; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .form-footnote {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(245, 158, 11, 0.04);
-            font-size: 12px;
-            color: rgba(243, 232, 255, 0.2);
-        }
-        .form-footnote i {
-            color: #F59E0B;
-            margin: 0 4px;
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 10, 26, 0.95);
-            backdrop-filter: blur(24px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1100;
-            padding: 16px;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal-content { 
-            background: rgba(26, 18, 37, 0.95); 
-            border: 1px solid rgba(245, 158, 11, 0.12); 
-            border-radius: 40px; 
-            padding: 32px 28px; 
-            text-align: center; 
-            max-width: 360px; 
-            width: 100%; 
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-            animation: modalPop 0.3s ease;
-        }
-        @keyframes modalPop {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .success-icon { 
-            width: 64px; height: 64px; 
-            background: linear-gradient(135deg, #F59E0B, #D97706); 
-            border-radius: 50%; 
-            margin: 0 auto 14px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 34px; 
-            color: #0F0A1A; 
-            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.15);
-        }
-        .modal-content h2 { 
-            color: #F59E0B; 
-            margin-bottom: 8px; 
-            font-size: 22px; 
-            font-weight: 800; 
-        }
-        .modal-content p { 
-            color: #D4C4E6; 
-            font-size: 14px; 
-            margin-bottom: 16px; 
-        }
-        .btn-wa, .btn-close-modal { 
-            display: block; 
-            width: 100%; 
-            padding: 12px; 
-            margin-top: 8px; 
-            border-radius: 16px; 
-            text-decoration: none; 
-            font-weight: 800; 
-            font-size: 14px; 
-            text-align: center; 
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-wa { 
-            background: #25D366; 
-            color: #0F0A1A; 
-        }
-        .btn-wa:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.2); 
-        }
-        .btn-close-modal { 
-            background: rgba(245, 158, 11, 0.04); 
-            color: #D4C4E6; 
-            border: 1px solid rgba(245, 158, 11, 0.06); 
-        }
-        .btn-close-modal:hover { 
-            background: rgba(245, 158, 11, 0.08); 
-            border-color: rgba(245, 158, 11, 0.12); 
-        }
-
-        @media (min-width: 768px) { 
-            .card { padding: 32px 36px 36px; } 
-            .logo-icon { width: 70px; height: 70px; font-size: 36px; } 
-            .brand-name { font-size: 36px; } 
-        }
-        @media (max-width: 600px) {
-            .card { padding: 20px 16px 24px; }
-            .logo-icon { width: 50px; height: 50px; font-size: 24px; }
-            .brand-name { font-size: 24px; }
-            .sub-title { font-size: 13px; padding: 4px 14px; }
-        }
-        @media (max-width: 400px) {
-            .card { padding: 16px 14px 20px; }
-            .brand-name { font-size: 20px; }
-            .logo-icon { width: 44px; height: 44px; font-size: 20px; }
-            input, select { font-size: 13px; padding: 10px 38px 10px 12px; }
-            .btn-premium { font-size: 14px; padding: 12px; }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#111015" />
+  <title>Abo Zahra | حجز الامتحان</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👑</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #111015;
+      --panel: #1b1820;
+      --panel-soft: #211d27;
+      --gold: #e9b94c;
+      --gold-strong: #f3ca68;
+      --text: #f8f5fb;
+      --muted: #bdb5c7;
+      --line: #38313f;
+      --danger: #ff8585;
+      --green: #40d99a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 22px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at top, #28202b 0%, var(--bg) 56%);
+      color: var(--text);
+      font-family: 'Cairo', sans-serif;
+    }
+    button, input, select { font: inherit; }
+    .page { width: 100%; max-width: 490px; }
+    .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 0 0 18px; }
+    .brand-mark {
+      width: 48px; height: 48px; display: grid; place-items: center;
+      border-radius: 15px; background: #211b25; border: 1px solid #68522c;
+      color: var(--gold); font-size: 23px;
+    }
+    .brand-name { margin: 0; color: var(--gold-strong); font-size: 29px; line-height: 1.2; font-weight: 900; }
+    .brand-caption { color: var(--muted); font-size: 11px; letter-spacing: 1.3px; margin-top: 3px; }
+    .card {
+      background: rgba(27, 24, 32, .97); border: 1px solid var(--line); border-radius: 24px;
+      padding: 25px; box-shadow: 0 20px 55px rgba(0,0,0,.28);
+    }
+    .heading { text-align: center; margin-bottom: 23px; }
+    .heading h1 { margin: 0 0 7px; font-size: 23px; line-height: 1.5; font-weight: 800; }
+    .heading p { color: var(--muted); margin: 0; font-size: 13px; line-height: 1.9; }
+    .simple-note {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 9px 12px; margin-top: 14px; border-radius: 12px;
+      color: #e7d5ac; background: rgba(233,185,76,.08); border: 1px solid rgba(233,185,76,.18);
+      font-size: 12px; font-weight: 600;
+    }
+    .form-group { margin-bottom: 17px; }
+    label { display: block; margin-bottom: 7px; font-size: 13px; font-weight: 700; color: #eee8f4; }
+    .required { color: var(--gold); margin-right: 3px; }
+    .field { position: relative; }
+    .field-icon {
+      position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
+      color: var(--gold); opacity: .9; width: 18px; text-align: center; pointer-events: none;
+    }
+    input, select {
+      width: 100%; min-height: 51px; padding: 12px 44px 12px 14px;
+      color: var(--text); background: #131117; border: 1px solid #403847;
+      border-radius: 13px; outline: none; transition: border-color .18s, box-shadow .18s;
+      text-align: right;
+    }
+    input::placeholder { color: #817889; }
+    input:focus, select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(233,185,76,.12); }
+    select { cursor: pointer; }
+    select option { background: #1b1820; color: var(--text); }
+    .hint { color: #a79eaf; font-size: 11px; margin-top: 5px; line-height: 1.7; }
+    .error { display: none; margin-top: 5px; color: var(--danger); font-size: 11px; font-weight: 600; }
+    .error.show { display: block; }
+    .submit-btn {
+      width: 100%; min-height: 54px; display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-top: 22px; border: 0; border-radius: 14px; color: #211808;
+      background: linear-gradient(135deg, var(--gold-strong), #d49b2d); font-size: 16px; font-weight: 900;
+      cursor: pointer; transition: filter .18s, transform .18s;
+    }
+    .submit-btn:hover { filter: brightness(1.06); }
+    .submit-btn:active { transform: scale(.99); }
+    .submit-btn:disabled { cursor: wait; opacity: .75; }
+    .spinner { display: none; width: 18px; height: 18px; border: 2px solid rgba(33,24,8,.28); border-top-color: #211808; border-radius: 50%; animation: spin .7s linear infinite; }
+    .submit-btn.loading .spinner { display: inline-block; }
+    .submit-btn.loading .btn-label { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .footnote { display: flex; align-items: flex-start; gap: 9px; margin-top: 18px; padding-top: 16px; border-top: 1px solid #332d39; color: var(--muted); font-size: 11px; line-height: 1.9; }
+    .footnote i { color: var(--gold); margin-top: 4px; }
+    .footer-brand { text-align: center; color: #766d7d; font-size: 11px; margin-top: 16px; }
+    .overlay { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(8,7,10,.82); }
+    .overlay.show { display: flex; }
+    .success-card { width: 100%; max-width: 370px; padding: 27px 23px; text-align: center; border-radius: 22px; background: var(--panel); border: 1px solid #4b4030; box-shadow: 0 22px 65px rgba(0,0,0,.4); }
+    .success-icon { width: 59px; height: 59px; margin: 0 auto 13px; display: grid; place-items: center; border-radius: 50%; background: rgba(64,217,154,.12); color: var(--green); font-size: 28px; }
+    .success-card h2 { margin: 0 0 7px; font-size: 22px; }
+    .success-card p { margin: 0 0 18px; color: var(--muted); font-size: 13px; line-height: 1.9; }
+    .wa-btn, .close-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 9px; min-height: 47px; border: 0; border-radius: 12px; text-decoration: none; font-weight: 800; cursor: pointer; }
+    .wa-btn { background: #25d366; color: #10251a; }
+    .close-btn { margin-top: 8px; color: var(--text); background: #2b2631; }
+    @media (max-width: 480px) {
+      body { padding: 15px 11px; align-items: flex-start; }
+      .brand { margin-bottom: 14px; }
+      .card { padding: 21px 16px; border-radius: 20px; }
+      .brand-name { font-size: 26px; }
+      .heading h1 { font-size: 21px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+  </style>
 </head>
 <body>
+  <main class="page">
+    <header class="brand" aria-label="Abo Zahra">
+      <div class="brand-mark" aria-hidden="true"><i class="fa-solid fa-crown"></i></div>
+      <div>
+        <p class="brand-name">Abo Zahra</p>
+        <div class="brand-caption">EXAM BOOKING</div>
+      </div>
+    </header>
 
-    <div class="admin-bg"></div>
-    <div class="animated-bg">
-        <div class="bg-gradient"></div>
-        <div class="star-field"></div>
-        <div class="gold-ring ring1"></div>
-        <div class="gold-ring ring2"></div>
-        <div class="gold-ring ring3"></div>
-    </div>
+    <section class="card" aria-labelledby="pageTitle">
+      <div class="heading">
+        <h1 id="pageTitle">حجز الامتحان</h1>
+        <p>املأ البيانات دي، وإحنا هنتواصل معاك لتأكيد الحجز.</p>
+        <div class="simple-note"><i class="fa-regular fa-clock"></i><span>3 بيانات بسيطة — من غير خطوات معقدة</span></div>
+      </div>
 
-    <div class="card">
-        <div class="hero">
-            <div class="logo-animation">
-                <div class="logo-icon">👑</div>
-                <div class="brand-name">Abo Zahra</div>
-            </div>
-            <div class="sub-title">📚 حجز الامتحان</div>
-            <div class="glow-badge">
-                <i class="fas fa-graduation-cap"></i> سجل الآن · مقاعد محدودة <i class="fas fa-bolt"></i>
-            </div>
+      <form id="bookingForm" novalidate>
+        <div class="form-group">
+          <label for="telegramName">اسمك على تليجرام <span class="required">*</span></label>
+          <div class="field">
+            <span class="field-icon"><i class="fa-brands fa-telegram"></i></span>
+            <input type="text" id="telegramName" name="telegramName" placeholder="اكتب اسمك كما يظهر على تليجرام" autocomplete="nickname" required />
+          </div>
+          <div class="hint">اكتب الاسم اللي نقدر نعرفك بيه على تليجرام.</div>
+          <div class="error" id="telegramNameError" role="alert"></div>
         </div>
 
-        <form id="bookingForm">
-            <div class="form-group">
-                <label>اسمك المسجل كما هو على التلجرام <span class="required">*</span></label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fab fa-telegram-plane"></i></span>
-                    <input type="text" id="telegramName" placeholder="مثل: Ahmed_Abdullah" />
-                </div>
-                <div class="error-msg" id="telegramNameError"></div>
-            </div>
-
-            <div class="form-group">
-                <label>رقم الواتس اب الخاص بك <span class="required">*</span></label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fab fa-whatsapp"></i></span>
-                    <input type="tel" id="whatsappNumber" placeholder="01XXXXXXXXX" maxlength="11" />
-                </div>
-                <div class="error-msg" id="whatsappNumberError"></div>
-            </div>
-
-            <div class="form-group">
-                <label>الشعبة <span class="required">*</span></label>
-                <div class="input-wrapper">
-                    <span class="input-icon"><i class="fas fa-users"></i></span>
-                    <select id="sectionSelect">
-                        <option value="">جاري تحميل الشعب...</option>
-                    </select>
-                </div>
-                <div class="error-msg" id="sectionError"></div>
-            </div>
-
-            <button type="submit" class="btn-premium" id="submitBtn">
-                <span class="spinner"></span>
-                <span class="btn-text"><i class="fas fa-check-circle"></i> تأكيد الحجز</span>
-            </button>
-        </form>
-
-        <div class="form-footnote">
-            <i class="fas fa-lock"></i> بياناتك آمنة · سيتم التواصل خلال 24 ساعة
-            <br>
-            <i class="fas fa-crown"></i> Abo Zahra 👑
+        <div class="form-group">
+          <label for="whatsappNumber">رقم واتساب <span class="required">*</span></label>
+          <div class="field">
+            <span class="field-icon"><i class="fa-brands fa-whatsapp"></i></span>
+            <input type="tel" id="whatsappNumber" name="whatsappNumber" placeholder="01XXXXXXXXX" inputmode="numeric" autocomplete="tel-national" maxlength="11" required />
+          </div>
+          <div class="hint">اكتب رقم مصري مكوّن من 11 رقم ويبدأ بـ 01.</div>
+          <div class="error" id="whatsappNumberError" role="alert"></div>
         </div>
-    </div>
 
-    <div class="modal-overlay" id="successModal">
-        <div class="modal-content">
-            <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-            <h2>تم الحجز بنجاح</h2>
-            <p>شكراً لك! سنتواصل معك قريباً عبر واتساب لتأكيد الحجز وإرسال رابط الامتحان.</p>
-            <a href="#" class="btn-wa" id="whatsappBtn" target="_blank">
-                <i class="fab fa-whatsapp"></i> تواصل عبر واتساب
-            </a>
-            <button class="btn-close-modal" id="closeModal">إغلاق</button>
+        <div class="form-group">
+          <label for="sectionSelect">الشعبة <span class="required">*</span></label>
+          <div class="field">
+            <span class="field-icon"><i class="fa-solid fa-book-open"></i></span>
+            <select id="sectionSelect" name="section" required>
+              <option value="">جاري تحميل الشعب...</option>
+            </select>
+          </div>
+          <div class="error" id="sectionError" role="alert"></div>
         </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="btn-label"><i class="fa-solid fa-check-circle"></i> تأكيد حجز الامتحان</span>
+        </button>
+      </form>
+
+      <div class="footnote"><i class="fa-solid fa-circle-info"></i><span>بعد التسجيل، هنتواصل معاك على واتساب لتأكيد الحجز وإرسال رابط الامتحان.</span></div>
+    </section>
+    <div class="footer-brand">Abo Zahra <span aria-hidden="true">👑</span></div>
+  </main>
+
+  <div class="overlay" id="successModal" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+    <div class="success-card">
+      <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+      <h2 id="successTitle">طلبك اتسجل بنجاح</h2>
+      <p>شكرًا ليك! هنتواصل معاك قريبًا على واتساب لتأكيد الحجز وإرسال رابط الامتحان.</p>
+      <a href="#" class="wa-btn" id="whatsappBtn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> تواصل عبر واتساب</a>
+      <button type="button" class="close-btn" id="closeModal">تمام</button>
     </div>
+  </div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <script>
-        // ===== إعدادات Firebase الجديدة (Abo Zahra) =====
-        const firebaseConfig = {
-            apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
-            authDomain: "reservations-e411a.firebaseapp.com",
-            databaseURL: "https://reservations-e411a-default-rtdb.firebaseio.com",
-            projectId: "reservations-e411a",
-            storageBucket: "reservations-e411a.firebasestorage.app",
-            messagingSenderId: "197134642642",
-            appId: "1:197134642642:web:a112f2cbf9dc64d0096c0b",
-            measurementId: "G-R0MVFWBG53"
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script>
+    // نفس إعدادات Firebase المستخدمة في صفحة الحجز الأصلية.
+    const firebaseConfig = {
+      apiKey: "AIzaSyDrhyNCKO5tzF-tiRQevk12kLM8hAkkr0w",
+      authDomain: "reservations-e411a.firebaseapp.com",
+      databaseURL: "https://reservations-e411a-default-rtdb.firebaseio.com",
+      projectId: "reservations-e411a",
+      storageBucket: "reservations-e411a.firebasestorage.app",
+      messagingSenderId: "197134642642",
+      appId: "1:197134642642:web:a112f2cbf9dc64d0096c0b",
+      measurementId: "G-R0MVFWBG53"
+    };
 
-        // ===== جلب الإعدادات من Firebase =====
-        async function getSettings() {
-            try {
-                const doc = await db.collection('settings').doc('siteSettings').get();
-                if (doc.exists) {
-                    return doc.data();
-                }
-            } catch (err) {
-                console.error('خطأ في جلب الإعدادات:', err);
-            }
-            // إعدادات افتراضية
-            return {
-                whatsapp: '01023456789',
-                cashNumber: '01023456789',
-                examAmount: '50'
-            };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const form = document.getElementById('bookingForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const telegramName = document.getElementById('telegramName');
+    const whatsappNumber = document.getElementById('whatsappNumber');
+    const sectionSelect = document.getElementById('sectionSelect');
+    const successModal = document.getElementById('successModal');
+    const whatsappBtn = document.getElementById('whatsappBtn');
+    const closeModalBtn = document.getElementById('closeModal');
+    const errors = {
+      name: document.getElementById('telegramNameError'),
+      phone: document.getElementById('whatsappNumberError'),
+      section: document.getElementById('sectionError')
+    };
+    let submitting = false;
+
+    async function getSettings() {
+      try {
+        const doc = await db.collection('settings').doc('siteSettings').get();
+        if (doc.exists) return doc.data();
+      } catch (error) {
+        console.error('تعذر تحميل إعدادات الموقع:', error);
+      }
+      return { whatsapp: '01023456789', cashNumber: '01023456789', examAmount: '50' };
+    }
+
+    function normalizeWhatsAppNumber(value) {
+      let digits = String(value || '').replace(/\D/g, '');
+      if (digits.startsWith('00')) digits = digits.slice(2);
+      if (digits.startsWith('0')) return '20' + digits.slice(1);
+      if (digits.startsWith('20')) return digits;
+      return '20' + digits;
+    }
+
+    async function getSiteWhatsApp() {
+      const settings = await getSettings();
+      return normalizeWhatsAppNumber(settings.whatsapp || '201282235324');
+    }
+
+    function showError(key, message) {
+      errors[key].textContent = '⚠ ' + message;
+      errors[key].classList.add('show');
+    }
+    function clearError(key) {
+      errors[key].textContent = '';
+      errors[key].classList.remove('show');
+    }
+
+    function addSectionOption(select, value, label) {
+      const option = document.createElement('option');
+      option.value = value;
+      option.textContent = label;
+      select.appendChild(option);
+    }
+
+    function showFallbackSections() {
+      sectionSelect.innerHTML = '<option value="">اختر الشعبة</option>';
+      addSectionOption(sectionSelect, 'علمي رياضة', 'علمي رياضة');
+      addSectionOption(sectionSelect, 'علمي علوم', 'علمي علوم');
+      addSectionOption(sectionSelect, 'أدبي', 'أدبي');
+    }
+
+    async function loadSections() {
+      sectionSelect.disabled = true;
+      try {
+        const snapshot = await db.collection('exam_sections').orderBy('name', 'asc').get();
+        sectionSelect.innerHTML = '<option value="">اختر الشعبة</option>';
+        if (!snapshot.empty) {
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const name = String(data.name || doc.id);
+            addSectionOption(sectionSelect, name, name);
+          });
+        } else {
+          showFallbackSections();
         }
+      } catch (error) {
+        console.error('تعذر تحميل الشعب:', error);
+        showFallbackSections();
+      } finally {
+        sectionSelect.disabled = false;
+      }
+    }
 
-        // ===== الحصول على رقم واتساب الموقع من Firebase =====
-        async function getSiteWhatsApp() {
-            const settings = await getSettings();
-            let number = settings.whatsapp || '201282235324';
-            number = number.replace(/[\s\+\-\(\)]/g, '');
-            if (number.startsWith('0')) {
-                number = '20' + number.substring(1);
-            } else if (!number.startsWith('20') && !number.startsWith('+')) {
-                number = '20' + number;
-            }
-            return number;
-        }
+    function isValidEgyptianPhone(value) {
+      return /^01[0-9]{9}$/.test(value);
+    }
 
-        // ===== تحميل الشعب من Firebase =====
-        async function loadSections() {
-            try {
-                const sectionsSnapshot = await db.collection('exam_sections').orderBy('name', 'asc').get();
-                const select = document.getElementById('sectionSelect');
-                
-                if (!sectionsSnapshot.empty) {
-                    select.innerHTML = '<option value="">اختر الشعبة...</option>';
-                    
-                    sectionsSnapshot.forEach(doc => {
-                        const data = doc.data();
-                        const option = document.createElement('option');
-                        option.value = data.name || doc.id;
-                        option.textContent = data.name || doc.id;
-                        select.appendChild(option);
-                    });
-                } else {
-                    select.innerHTML = `
-                        <option value="">لا توجد شعب متاحة</option>
-                    `;
-                    const defaultSections = ['علمي رياضة', 'علمي علوم', 'أدبي'];
-                    defaultSections.forEach(section => {
-                        const option = document.createElement('option');
-                        option.value = section;
-                        option.textContent = '📚 ' + section;
-                        select.appendChild(option);
-                    });
-                }
-            } catch (error) {
-                console.error('خطأ في تحميل الشعب:', error);
-                const select = document.getElementById('sectionSelect');
-                select.innerHTML = `
-                    <option value="">اختر الشعبة...</option>
-                    <option value="علمي رياضة">📐 علمي رياضة</option>
-                    <option value="علمي علوم">🔬 علمي علوم</option>
-                    <option value="أدبي">📖 أدبي</option>
-                `;
-            }
-        }
+    async function openSuccessModal(message) {
+      const waNumber = await getSiteWhatsApp();
+      whatsappBtn.href = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent(message);
+      successModal.classList.add('show');
+      closeModalBtn.focus();
+    }
 
-        // ===== عناصر الصفحة =====
-        const form = document.getElementById('bookingForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const successModal = document.getElementById('successModal');
-        const closeModalBtn = document.getElementById('closeModal');
-        const whatsappBtn = document.getElementById('whatsappBtn');
-        const bodyEl = document.body;
+    function closeSuccessModal() {
+      successModal.classList.remove('show');
+    }
 
-        const telegramName = document.getElementById('telegramName');
-        const whatsappNumber = document.getElementById('whatsappNumber');
-        const sectionSelect = document.getElementById('sectionSelect');
+    loadSections();
 
-        const nameErr = document.getElementById('telegramNameError');
-        const waErr = document.getElementById('whatsappNumberError');
-        const sectionErr = document.getElementById('sectionError');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submitting) return;
+      Object.keys(errors).forEach(clearError);
 
-        // ===== تحميل الشعب عند تحميل الصفحة =====
-        loadSections();
+      const name = telegramName.value.trim();
+      const phone = whatsappNumber.value.trim();
+      const section = sectionSelect.value;
+      let valid = true;
 
-        // ===== دوال مساعدة =====
-        function showError(errEl, msg) {
-            errEl.innerHTML = '⚠ ' + msg;
-            errEl.classList.add('show');
-        }
+      if (!name) {
+        showError('name', 'اكتب اسمك المسجل على تليجرام.');
+        valid = false;
+      }
+      if (!phone) {
+        showError('phone', 'اكتب رقم واتساب.');
+        valid = false;
+      } else if (!isValidEgyptianPhone(phone)) {
+        showError('phone', 'رقم غير صحيح. لازم يبدأ بـ 01 ويتكون من 11 رقم.');
+        valid = false;
+      }
+      if (!section) {
+        showError('section', 'اختار الشعبة من القائمة.');
+        valid = false;
+      }
+      if (!valid) {
+        const firstInvalid = document.querySelector('.error.show');
+        if (firstInvalid) firstInvalid.closest('.form-group').querySelector('input, select').focus();
+        return;
+      }
 
-        function clearError(errEl) {
-            errEl.classList.remove('show');
-        }
+      submitting = true;
+      submitBtn.disabled = true;
+      submitBtn.classList.add('loading');
 
-        function isValidPhone(val) {
-            return /^01[0-9]{9}$/.test(val);
-        }
-
-        async function openSuccessModal(waMsg) {
-            const waNumber = await getSiteWhatsApp();
-            if (waNumber.startsWith('0')) {
-                whatsappBtn.href = 'https://wa.me/20' + waNumber.substring(1) + '?text=' + encodeURIComponent(waMsg);
-            } else if (!waNumber.startsWith('20') && !waNumber.startsWith('+')) {
-                whatsappBtn.href = 'https://wa.me/20' + waNumber + '?text=' + encodeURIComponent(waMsg);
-            } else {
-                whatsappBtn.href = 'https://wa.me/' + waNumber.replace('+', '') + '?text=' + encodeURIComponent(waMsg);
-            }
-            successModal.classList.add('show');
-            bodyEl.classList.add('modal-open');
-        }
-
-        function closeSuccessModal() {
-            successModal.classList.remove('show');
-            bodyEl.classList.remove('modal-open');
-        }
-
-        // ===== إرسال النموذج =====
-        let submitting = false;
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (submitting) return;
-
-            [nameErr, waErr, sectionErr].forEach(el => el.classList.remove('show'));
-
-            const name = telegramName.value.trim();
-            const wa = whatsappNumber.value.trim();
-            const section = sectionSelect.value;
-
-            let valid = true;
-
-            if (!name) {
-                showError(nameErr, 'الاسم المسجل على التلجرام مطلوب');
-                valid = false;
-            }
-            if (!wa) {
-                showError(waErr, 'رقم الواتس اب مطلوب');
-                valid = false;
-            } else if (!isValidPhone(wa)) {
-                showError(waErr, 'رقم غير صحيح (يبدأ 01)');
-                valid = false;
-            }
-            if (!section) {
-                showError(sectionErr, 'الرجاء اختيار الشعبة');
-                valid = false;
-            }
-
-            if (!valid) return;
-
-            submitting = true;
-            submitBtn.classList.add('loading');
-
-            try {
-                await db.collection('exam_reservations').add({
-                    name: name,
-                    phone: wa,
-                    section: section,
-                    status: 'pending',
-                    created_at: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                const msg = 
-                    `👑 حجز امتحان جديد - Abo Zahra\n` +
-                    `👤 الاسم (تلجرام): ${name}\n` +
-                    `📱 واتساب: ${wa}\n` +
-                    `📚 الشعبة: ${section}\n\n` +
-                    `📌 سيتم التواصل لتأكيد الحجز وإرسال رابط الامتحان.`;
-
-                await openSuccessModal(msg);
-                form.reset();
-                sectionSelect.selectedIndex = 0;
-
-            } catch (err) {
-                console.error(err);
-                alert('⚠️ حدث خطأ تقني، حاول مرة أخرى.');
-            } finally {
-                submitting = false;
-                submitBtn.classList.remove('loading');
-            }
+      try {
+        // الحفاظ على مجموعة الحجز والحقول الحالية لتوافق لوحة الإدارة.
+        await db.collection('exam_reservations').add({
+          name,
+          phone,
+          section,
+          status: 'pending',
+          created_at: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // ===== إغلاق المودال =====
-        closeModalBtn.addEventListener('click', closeSuccessModal);
-        successModal.addEventListener('click', (e) => {
-            if (e.target === successModal) closeSuccessModal();
-        });
+        const message =
+          `👑 حجز امتحان جديد - Abo Zahra\n` +
+          `👤 الاسم (تليجرام): ${name}\n` +
+          `📱 واتساب: ${phone}\n` +
+          `📚 الشعبة: ${section}\n\n` +
+          `📌 تم تسجيل طلب الحجز، برجاء تأكيده وإرسال رابط الامتحان.`;
 
-        // ===== التحقق المباشر =====
-        whatsappNumber.addEventListener('input', () => {
-            const val = whatsappNumber.value.trim();
-            if (val && !isValidPhone(val)) {
-                showError(waErr, 'رقم غير صحيح (يبدأ 01)');
-            } else {
-                clearError(waErr);
-            }
-        });
+        form.reset();
+        sectionSelect.value = '';
+        await openSuccessModal(message);
+      } catch (error) {
+        console.error('تعذر تسجيل الحجز:', error);
+        alert('حصلت مشكلة في تسجيل الحجز. اتأكد من اتصال الإنترنت وحاول مرة تانية.');
+      } finally {
+        submitting = false;
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('loading');
+      }
+    });
 
-        telegramName.addEventListener('input', () => {
-            if (telegramName.value.trim()) clearError(nameErr);
-        });
+    whatsappNumber.addEventListener('input', () => {
+      whatsappNumber.value = whatsappNumber.value.replace(/[^0-9]/g, '').slice(0, 11);
+      if (!whatsappNumber.value || isValidEgyptianPhone(whatsappNumber.value)) clearError('phone');
+    });
+    telegramName.addEventListener('input', () => {
+      if (telegramName.value.trim()) clearError('name');
+    });
+    sectionSelect.addEventListener('change', () => {
+      if (sectionSelect.value) clearError('section');
+    });
 
-        sectionSelect.addEventListener('change', () => {
-            if (sectionSelect.value) clearError(sectionErr);
-        });
-
-        // ===== الاستماع لتغييرات الإعدادات (من Firebase) =====
-        // لا نحتاج مستمع localStorage لأن البيانات تجلب من Firebase مباشرة
-        // لكن يمكن إضافة مستمع لتحديثات Firebase إذا أردت
-
-        // في حالة تغيير الإعدادات من dashboard، سيتم جلبها عند下次 فتح المودال
-    </script>
+    closeModalBtn.addEventListener('click', closeSuccessModal);
+    successModal.addEventListener('click', (event) => {
+      if (event.target === successModal) closeSuccessModal();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeSuccessModal();
+    });
+  </script>
 </body>
 </html>
